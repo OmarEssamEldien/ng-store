@@ -1,12 +1,13 @@
 <h3 class="title">Our Products</h3>
 
+@if (showFilter()) {
 <!-- Filter Controls -->
 <div class="filters-bar">
   <!-- Search Input -->
   <div class="filter-group search-group">
     <label for="search">Search</label>
-    <input id="search" type="text" placeholder="Search by name or keyword..." [ngModel]="searchTerm()"
-      (ngModelChange)="searchTerm.set($event)" />
+    <input id="search" type="text" autocomplete="off" placeholder="Search by name or keyword..."
+      [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)" />
   </div>
   <!-- Category Filter -->
   <div class="filter-group">
@@ -27,48 +28,76 @@
       (ngModelChange)="maxPrice.set(+$event)" />
   </div>
 </div>
+}
 
-<div class="products-grid">
-  @for (product of filteredProducts(); track product.id) {
-  <div class="product">
-    <!-- Thumbnail & Badges -->
-    <a routerLink="/products/{{product.id}}">
-      <div class="img-wrapper">
-        <img [src]="product.thumbnail" [alt]="product.title" loading="lazy" />
-        @if (product.discountPercentage) {
-        <span class="badge discount">-{{ product.discountPercentage | number:'1.0-0' }}%</span>
-        }
-        <span class="badge category">{{ product.category }}</span>
-      </div>
-    </a>
-
-    <!-- Product Info -->
-    <div class="product-info">
-      <div class="rating-brand">
-        <span class="brand">{{ product.brand || 'General' }}</span>
-        <span class="rating">★ {{ product.rating }}</span>
-      </div>
-
-      <a routerLink="/products/{{product.id}}">
-        <h4 class="product-title" [title]="product.title">{{ product.title }}</h4>
-      </a>
-
-      <p class="description">{{ product.description }}</p>
-
-      <!-- Price & Actions -->
-      <div class="product-footer">
-        <div class="price-container">
-          <span class="price">{{ product.price | currency }}</span>
-          <span class="stock" [class.low-stock]="product.stock < 10">
-            {{ product.stock > 0 ? product.stock + ' in stock' : 'Out of Stock' }}
-          </span>
-        </div>
-
-        <button class="btn-buy" type="button">
-          Add to Cart
-        </button>
-      </div>
-    </div>
+<div class="products-container">
+  @if (isLoading()) {
+  <div class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Loading products...</p>
   </div>
   }
+  <div class="products-grid">
+    @for (product of filteredProducts(); track product.id) {
+    <div class="product">
+      <!-- Thumbnail & Badges -->
+      <a routerLink="/products/{{product.id}}">
+        <div class="img-wrapper">
+          <img [src]="product.thumbnail" [alt]="product.title" loading="lazy" />
+          @if (product.discountPercentage) {
+          <span class="badge discount">-{{ product.discountPercentage | number:'1.0-0' }}%</span>
+          }
+          <span class="badge category">{{ product.category }}</span>
+        </div>
+      </a>
+
+      <!-- Product Info -->
+      <div class="product-info">
+        <div class="rating-brand">
+          <span class="brand">{{ product.brand || 'General' }}</span>
+          <span class="rating">★ {{ product.rating }}</span>
+        </div>
+
+        <a routerLink="/products/{{product.id}}">
+          <h4 class="product-title" [title]="product.title">{{ product.title }}</h4>
+        </a>
+
+        <p class="description">{{ product.description }}</p>
+
+        <!-- Price & Actions -->
+        <div class="product-footer">
+          <div class="price-container">
+            <span class="price">{{ product.price | currency }}</span>
+            <span class="stock" [class.low-stock]="product.stock < 10">
+              {{ product.stock > 0 ? product.stock + ' in stock' : 'Out of Stock' }}
+            </span>
+          </div>
+
+          <button class="btn-buy" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+            Buy Now
+          </button>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
 </div>
+
+@if (showFilter() && totalPages() > 1) {
+<div class="pagination-controls">
+  <button (click)="firstPage()" [disabled]="currentPage() === 1" title="First Page">«</button>
+  <button (click)="prevPage()" [disabled]="currentPage() === 1" title="Previous Page">‹ Prev</button>
+  @for (page of visiblePages(); track page) {
+  <button [class.active]="currentPage() === page" (click)="goToPage(page)">
+    {{ page }}
+  </button>
+  }
+  <button (click)="nextPage()" [disabled]="currentPage() === totalPages()" title="Next Page">Next ›</button>
+  <button (click)="lastPage()" [disabled]="currentPage() === totalPages()" title="Last Page">»</button>
+</div>
+}
