@@ -12,8 +12,11 @@ const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
 
 const app = express();
+app.set('trust proxy', true);
+
 const angularApp = new AngularNodeAppEngine({
   allowedHosts: ['ng-store.revelop.dev', 'localhost', 'localhost:4000', '127.0.0.1', '127.0.0.1:4000'],
+  trustProxyHeaders: true,
 });
 
 /**
