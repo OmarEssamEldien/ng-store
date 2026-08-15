@@ -1,0 +1,74 @@
+<h3 class="title">Our Products</h3>
+
+<!-- Filter Controls -->
+<div class="filters-bar">
+  <!-- Search Input -->
+  <div class="filter-group search-group">
+    <label for="search">Search</label>
+    <input id="search" type="text" placeholder="Search by name or keyword..." [ngModel]="searchTerm()"
+      (ngModelChange)="searchTerm.set($event)" />
+  </div>
+  <!-- Category Filter -->
+  <div class="filter-group">
+    <label for="category">Category</label>
+    <select id="category" [ngModel]="selectedCategory()" (ngModelChange)="selectedCategory.set($event)">
+      @for (cat of categories(); track cat) {
+      <option [value]="cat">{{ cat | titlecase }}</option>
+      }
+    </select>
+  </div>
+  <!-- Price Range Slider -->
+  <div class="filter-group price-slider">
+    <div class="price-header">
+      <label for="price">Max Price:</label>
+      <span>{{ maxPrice() | currency }}</span>
+    </div>
+    <input id="price" type="range" min="0" [max]="initialMaxPrice()" step="5" [ngModel]="maxPrice()"
+      (ngModelChange)="maxPrice.set(+$event)" />
+  </div>
+</div>
+
+<div class="products-grid">
+  @for (product of filteredProducts(); track product.id) {
+  <div class="product">
+    <!-- Thumbnail & Badges -->
+    <a routerLink="/products/{{product.id}}">
+      <div class="img-wrapper">
+        <img [src]="product.thumbnail" [alt]="product.title" loading="lazy" />
+        @if (product.discountPercentage) {
+        <span class="badge discount">-{{ product.discountPercentage | number:'1.0-0' }}%</span>
+        }
+        <span class="badge category">{{ product.category }}</span>
+      </div>
+    </a>
+
+    <!-- Product Info -->
+    <div class="product-info">
+      <div class="rating-brand">
+        <span class="brand">{{ product.brand || 'General' }}</span>
+        <span class="rating">★ {{ product.rating }}</span>
+      </div>
+
+      <a routerLink="/products/{{product.id}}">
+        <h4 class="product-title" [title]="product.title">{{ product.title }}</h4>
+      </a>
+
+      <p class="description">{{ product.description }}</p>
+
+      <!-- Price & Actions -->
+      <div class="product-footer">
+        <div class="price-container">
+          <span class="price">{{ product.price | currency }}</span>
+          <span class="stock" [class.low-stock]="product.stock < 10">
+            {{ product.stock > 0 ? product.stock + ' in stock' : 'Out of Stock' }}
+          </span>
+        </div>
+
+        <button class="btn-buy" type="button">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+</div>
