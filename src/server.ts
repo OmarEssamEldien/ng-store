@@ -13,7 +13,7 @@ const browserDistFolder = resolve(serverDistFolder, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine({
-  allowedHosts: new Set(['ng-store.revelop.dev', 'localhost', 'localhost:4000', '127.0.0.1', '127.0.0.1:4000']),
+  allowedHosts: ['ng-store.revelop.dev', 'localhost', 'localhost:4000', '127.0.0.1', '127.0.0.1:4000'],
 });
 
 /**
