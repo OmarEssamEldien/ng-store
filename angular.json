@@ -38,11 +38,7 @@
             "server": "src/main.server.ts",
             "outputMode": "server",
             "security": {
-              "allowedHosts": [
-                "ng-store.revelop.dev",
-                "localhost*",
-                "127.0.0.1*"
-              ]
+              "allowedHosts": ["*"]
             },
             "ssr": {
               "entry": "src/server.ts"
