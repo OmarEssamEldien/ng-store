@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { ProductsService } from '../services/products.service';
 import { Product } from '../model/product.type';
 import { SeoService } from '../services/seo.service';
 
@@ -15,7 +14,6 @@ export class ProductDetailsComponent implements OnInit {
 
   seo = inject(SeoService);
   route = inject(ActivatedRoute);
-  productsService = inject(ProductsService);
 
   product = signal<Product | null>(null);
   selectedImage = signal<String>('');
@@ -23,20 +21,12 @@ export class ProductDetailsComponent implements OnInit {
   error = signal<String | null>(null);
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.productsService.getProductById(id).subscribe({
-        next: (product) => {
-          this.product.set(product);
-          this.selectedImage.set(product.images[0]);
-          this.loading.set(false);
-          this.updateSeo();
-        },
-        error: (err) => {
-          this.loading.set(false);
-          this.error.set(err.message || 'Failed to load product details');
-        }
-      });
+    const product = this.route.snapshot.data['product'] as Product;
+    if (product) {
+      this.product.set(product);
+      this.selectedImage.set(product.images[0]);
+      this.loading.set(false);
+      this.updateSeo();
     }
   }
 
@@ -52,3 +42,4 @@ export class ProductDetailsComponent implements OnInit {
     this.seo.updateOgImage(p.thumbnail);
   }
 }
+
