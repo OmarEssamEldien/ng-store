@@ -3,6 +3,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Product } from '../model/product.type';
 import { SeoService } from '../services/seo.service';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-product-details',
@@ -12,6 +13,7 @@ import { SeoService } from '../services/seo.service';
 })
 export class ProductDetailsComponent implements OnInit {
 
+  cartService = inject(CartService);
   seo = inject(SeoService);
   route = inject(ActivatedRoute);
 

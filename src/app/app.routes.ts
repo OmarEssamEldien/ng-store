@@ -18,6 +18,16 @@ export const routes: Routes = [
         pathMatch: 'full',
         loadComponent: () => import('./product-details/product-details.component').then(m => m.ProductDetailsComponent),
         resolve: { product: productDetailsResolver }
-    }
+    },
+    {
+        path: 'about',
+        pathMatch: 'full',
+        loadComponent: () => import('./about/about.component').then(m => m.AboutComponent)
+    },
+    {
+        path: 'contact',
+        pathMatch: 'full',
+        loadComponent: () => import('./contact/contact.component').then(m => m.ContactComponent)
+    },
 
 ];
