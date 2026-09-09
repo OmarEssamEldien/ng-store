@@ -29,6 +29,8 @@ export class ProductDetailsComponent implements OnInit {
       this.selectedImage.set(product.images[0]);
       this.loading.set(false);
       this.updateSeo();
+    } else {
+      this.error.set('Product not found or failed to load.');
     }
   }
 

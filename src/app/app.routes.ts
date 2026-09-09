@@ -29,5 +29,13 @@ export const routes: Routes = [
         pathMatch: 'full',
         loadComponent: () => import('./contact/contact.component').then(m => m.ContactComponent)
     },
-
+    {
+        path: '404',
+        pathMatch: 'full',
+        loadComponent: () => import('./not-found/not-found.component').then(m => m.NotFoundComponent)
+    },
+    {
+        path: '**',
+        redirectTo: '404'
+    }
 ];
