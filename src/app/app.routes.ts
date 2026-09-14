@@ -30,6 +30,16 @@ export const routes: Routes = [
         loadComponent: () => import('./contact/contact.component').then(m => m.ContactComponent)
     },
     {
+        path: 'checkout',
+        pathMatch: 'full',
+        loadComponent: () => import('./checkout/checkout.component').then(m => m.CheckoutComponent)
+    },
+    {
+        path: 'checkout/success',
+        pathMatch: 'full',
+        loadComponent: () => import('./checkout-success/checkout-success.component').then(m => m.CheckoutSuccessComponent)
+    },
+    {
         path: '404',
         pathMatch: 'full',
         loadComponent: () => import('./not-found/not-found.component').then(m => m.NotFoundComponent)

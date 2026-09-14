@@ -53,6 +53,15 @@ export class CartService {
     )
   );
 
+  discount = computed(() =>
+    this.cartItems().reduce(
+      (acc, item) => acc + item.product.discountPercentage / 100 * item.product.price * item.quantity,
+      0
+    )
+  );
+
+  totalAmount = computed(() => this.subtotal() - this.discount());
+
   toggleCart() {
     this.isOpen.update((open) => !open);
   }
